@@ -1,14 +1,41 @@
 const express = require('express')
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const cors = require('cors')
 
 const userRoutes = require('./app/routes/user_routes')
 const bubbleRoutes = require('./app/routes/sort')
 
-// middleware for error handling and troubleshooting
+// // middleware for error handling and troubleshooting
 const errorHandler = require('./lib/error_handler')
 const requestLogger = require('./lib/request_logger')
 
+// const uri = "mongodb+srv://kelvingraham1@gmail.com:@#z76.B6T/84wKY@cluster43730.limoj7k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster43730";
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+//const uri = process.env.MONGODB_URI
+const uri = "mongodb+srv://kgraham:kgraham@cluster43730.limoj7k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster43730";
+//console.log(uri)
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
 
 /**********************************************************
  * CONSTANTS
@@ -30,7 +57,8 @@ const port = process.env.PORT || serverDevPort
  *********************************************************/
 
 // establish database connection
-mongoose.connect(db, dbSetup)//.catch(err => console.log(err.reason)); //CHANGED
+//mongoose.connect(db, dbSetup)//.catch(err => console.log(err.reason)); //CHANGED
+//mongoose.connect(uri)
 
 // instantiate express application object
 const app = express()
