@@ -1,5 +1,5 @@
 const express = require('express')
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 const cors = require('cors')
 
 const userRoutes = require('./app/routes/user_routes')
@@ -9,26 +9,30 @@ const bubbleRoutes = require('./app/routes/sort')
 const errorHandler = require('./lib/error_handler')
 const requestLogger = require('./lib/request_logger')
 
-// const uri = "mongodb+srv://kelvingraham1@gmail.com:@#z76.B6T/84wKY@cluster43730.limoj7k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster43730";
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { _, ServerApiVersion } = require('mongodb');
 //const uri = process.env.MONGODB_URI
-const uri = "mongodb+srv://kgraham:kgraham@cluster43730.limoj7k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster43730";
+const uri = "mongodb+srv://kgraham:kgraham@cluster43730.limoj7k.mongodb.net/test_db?retryWrites=true&w=majority&appName=Cluster43730";
 //console.log(uri)
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
+
+mongoose.connect(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
   }
-});
+})
+.then(()=>console.log('Connected!'))
+.catch(e=>console.log(e));
+
+/*
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    await client.connect(); // TODO fix
+    //await client.connect({dbName: 'test_db'}); // TODO fix
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    //await client.db("admin").command({ ping: 1 });
+    await client.db("test_db").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
@@ -36,6 +40,7 @@ async function run() {
   }
 }
 run().catch(console.dir);
+*/
 
 /**********************************************************
  * CONSTANTS
@@ -43,7 +48,7 @@ run().catch(console.dir);
 
 // require database configuration logic
 // `db` will be the actual Mongo URI as a string
-const {db, dbSetup} = require('./config/db')
+//const {db, dbSetup} = require('./config/db')
 
 // define server and client ports
 // used for cors and local port declaration

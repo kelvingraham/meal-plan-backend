@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   },
   token: String
 }, {
+  //collection: 'Users',
   timestamps: true,
   toJSON: {
     // remove `hashedPassword` field when we call `.toJSON`
